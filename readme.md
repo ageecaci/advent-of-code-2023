@@ -25,3 +25,17 @@ The solutions here assume these will be in files named
 `<day>[sub-problem]-input.txt`
 in the respective subdirectories,
 similarly to the above.
+
+## Run the Code
+
+Make sure to setup any necessary example or input data first.
+For every solution (except the first day)
+running the script without arguments will use a relevant `-input.txt` file.
+The `-e` parameter can be specified on the command line
+to instead have the script search for a relevant `-examples.txt` file.
+
+Day | Mechanism | Notes
+-- | ----- | ----
+1 | `cd 1 && python3 1a.py` |
+2 | `2/2a.py` |
+3 | `3/3a.py` | requires venv activation
