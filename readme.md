@@ -12,17 +12,21 @@ Solutions for [Advent of Code 2023][aoc.2023].
 
 Puzzle examples are included with each puzzle problem statement.
 The solutions here assume these will be in files named
-`<day>[sub-problem]-examples.txt`
+`<day>[sub-problem]-examples[optional-suffix].txt`
 in the respective subdirectories,
-where `<day>` should be replaced with the name of the directory,
-and `[sub-problem]` can either be omitted
-(if all problems share the same example)
-or should use the same suffix as the script being run.
+where:
+
+- `<day>` should be replaced with the name of the directory;
+- `[sub-problem]` can either be omitted
+  (if all problems share the same example)
+  or should use the same suffix as the script being run;
+- `optional-suffix` can be anything,
+  but will need to be specified at the command line when running the script.
 
 Puzzle inputs are generated on a per-user basis.
 To get your puzzle inputs, please sign in to the AoC site.
 The solutions here assume these will be in files named
-`<day>[sub-problem]-input.txt`
+`<day>[sub-problem]-input[optional-suffix].txt`
 in the respective subdirectories,
 similarly to the above.
 
@@ -33,6 +37,8 @@ For every solution,
 running the script without arguments will use a relevant `-input.txt` file.
 The `-e` parameter can be specified on the command line
 to instead have the script search for a relevant `-examples.txt` file.
+Any text specified without a leading dash (`-`)
+will be assumed to be a filename suffix.
 
 The `-v` parameter will enable debug logging - where available.
 This mode provides additional hints as to the steps taken while solving.
@@ -45,7 +51,8 @@ The setup script assumes a UNIX virtual environment will be created.
 ./setup.sh
 . ./.venv/bin/activate
 DAY=1
-"${DAY}/${DAY}a.py" -ve
-"${DAY}/${DAY}a.py"
-"${DAY}/${DAY}b.py"
+"${DAY}/${DAY}a.py" -ve   # can use `${DAY}/${DAY}a-examples.txt` as input
+"${DAY}/${DAY}a.py" -ve 2 # can use `${DAY}/${DAY}a-examples2.txt` as input
+"${DAY}/${DAY}a.py"       # can use `${DAY}/${DAY}a-input.txt` as input
+"${DAY}/${DAY}b.py"       # can use `${DAY}/${DAY}b-input.txt` as input
 ```
