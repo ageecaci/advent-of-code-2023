@@ -9,18 +9,30 @@ from lib.class_text_coordinate import TextCoordinate as Coordinate
 logger = logging.getLogger(__name__)
 
 
-def valid_neighbours(coord: Coordinate, limits: Limits) -> Iterable[Coordinate]:
-    for neighbour in gen_neighbours(coord):
+def lookup_in(coord: Coordinate, grid: list[str]) -> str:
+    return grid[coord.line][coord.character]
+
+
+def valid_neighbours(
+        coord: Coordinate,
+        limits: Limits,
+        diagonal: bool = True
+        ) -> Iterable[Coordinate]:
+    for neighbour in gen_neighbours(coord, diagonal=diagonal):
         if limits.contains(neighbour):
             yield neighbour
 
 
-def gen_neighbours(coord: Coordinate) -> Iterable[Coordinate]:
-    yield Coordinate(coord.line - 1, coord.character - 1)
+def gen_neighbours(coord: Coordinate, diagonal: bool = True) -> Iterable[Coordinate]:
+    if diagonal:
+        yield Coordinate(coord.line - 1, coord.character - 1)
     yield Coordinate(coord.line - 1, coord.character)
-    yield Coordinate(coord.line - 1, coord.character + 1)
+    if diagonal:
+        yield Coordinate(coord.line - 1, coord.character + 1)
     yield Coordinate(coord.line, coord.character - 1)
     yield Coordinate(coord.line, coord.character + 1)
-    yield Coordinate(coord.line + 1, coord.character - 1)
+    if diagonal:
+        yield Coordinate(coord.line + 1, coord.character - 1)
     yield Coordinate(coord.line + 1, coord.character)
-    yield Coordinate(coord.line + 1, coord.character + 1)
+    if diagonal:
+        yield Coordinate(coord.line + 1, coord.character + 1)
