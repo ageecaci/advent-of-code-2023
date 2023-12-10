@@ -9,8 +9,10 @@ sys.path.append(os.path.normpath(os.path.join(
 
 import numpy as np
 
-from lib.class_coordinate import Coordinate as cco
+from lib.class_text_coordinate_limits import TextCoordinateLimits as Limits
+from lib.class_text_coordinate import TextCoordinate as Coordinate
 import lib.helper_args as ha
+import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
@@ -28,42 +30,12 @@ def find_characters(lines):
     print(json.dumps(sorted(list(characters))))
 
 
-def does_character_match(grid: list[str], coord: cco, matching_characters: str):
-    return grid[coord.x][coord.y] in matching_characters
-
-
-'''
-minimums are inclusive, maximums are exclusive
-gen_neighbours(cco(1,1), max_x=3, max_y=3) -> cco(0,0)..cco(2,2)
-'''
-def valid_neighbours(coord: cco, *args, min_x=0, max_x, min_y=0, max_y):
-    if min_x >= max_x:
-        return
-    if min_y >= max_y:
-        return
-    for neighbour in gen_neighbours(coord):
-        if neighbour.x >= min_x and neighbour.x < max_x:
-            if neighbour.y >= min_y and neighbour.y < max_y:
-                yield neighbour
-
-
-def gen_neighbours(coord: cco):
-    yield cco(coord.x - 1, coord.y - 1)
-    yield cco(coord.x - 1, coord.y)
-    yield cco(coord.x - 1, coord.y + 1)
-    yield cco(coord.x, coord.y - 1)
-    yield cco(coord.x, coord.y + 1)
-    yield cco(coord.x + 1, coord.y - 1)
-    yield cco(coord.x + 1, coord.y)
-    yield cco(coord.x + 1, coord.y + 1)
-
-
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))
 
-    # as we iterate over lines first, max "x" is actually depth
     depth = len(lines)
     width = len(lines[0])
+    limits = Limits(depth, width)
 
     # find all symbols
     symbol_coords = []
@@ -72,16 +44,16 @@ def main(props):
         for j in range(len(line)):
             character = line[j]
             if character in symbols:
-                symbol_coords.append(cco(i, j))
+                symbol_coords.append(Coordinate(i, j))
     logging.debug('Discovered %d symbol coordinates: %r', len(symbol_coords), symbol_coords)
 
     # mark adjacent digits
     adjacent = np.full((depth, width), False, np.bool_)
     for symbol in symbol_coords:
-        for neighbour in valid_neighbours(symbol, max_x=depth, max_y=width):
-            neighbour_character = lines[neighbour.x][neighbour.y]
+        for neighbour in hc.valid_neighbours(symbol, limits):
+            neighbour_character = lines[neighbour.line][neighbour.character]
             if neighbour_character in digits:
-                adjacent[neighbour.x, neighbour.y] = True
+                adjacent[neighbour.line, neighbour.character] = True
 
     # for each "adjacent digit" find the "adjacent number"
     for i in range(depth):
