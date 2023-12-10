@@ -42,5 +42,5 @@ def parse_name(file_path_str: str, args: argparse.Namespace) -> cep:
     file_path = pathlib.Path(file_path_str).resolve()
     file_name = file_path.stem
     if args is not None:
-        return cep(int(file_name[0]), file_name[1], file_path.parent, args.examples, args.file_suffix, args.verbose)
-    return cep(int(file_name[0]), file_name[1], file_path.parent)
+        return cep(int(file_name[:-1]), file_name[-1], file_path.parent, args.examples, args.file_suffix, args.verbose)
+    return cep(int(file_name[:-1]), file_name[-1], file_path.parent)
