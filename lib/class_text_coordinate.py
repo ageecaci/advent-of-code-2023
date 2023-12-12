@@ -1,13 +1,10 @@
 from dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class TextCoordinate:
     line: int
     character: int
-
-    def __hash__(self) -> int:
-        return hash(self.line) + 7 * hash(self.character)
 
     def above(self, other) -> bool:
         if isinstance(other, TextCoordinate):

@@ -3,7 +3,7 @@ import pathlib
 from typing import Optional
 
 
-@dataclass
+@dataclass(frozen=True)
 class ExerciseProperties:
     day: int
     exercise: str

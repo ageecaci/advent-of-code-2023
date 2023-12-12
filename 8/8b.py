@@ -14,7 +14,7 @@ import lib.helper_file as hf
 import lib.helper_log as hl
 
 
-@dataclass
+@dataclass(frozen=True)
 class DesertNode:
     id: int
     left: int

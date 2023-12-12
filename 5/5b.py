@@ -18,7 +18,7 @@ import lib.helper_file as hf
 import lib.helper_log as hl
 
 
-@dataclass
+@dataclass(frozen=True)
 class AlmanacRange:
     start: int
     length: int
@@ -146,7 +146,6 @@ def main(props):
     closest_location = -1
     while len(to_process) > 0:
         almanac_range = to_process.pop()
-        almanac_range.source = almanac_range.source
         if almanac_range.source == 'location':
             if closest_location < 0:
                 closest_location = almanac_range.start

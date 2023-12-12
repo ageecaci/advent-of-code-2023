@@ -39,7 +39,7 @@ class Pipeline:
         return coord in self.coordinates
 
 
-@dataclass
+@dataclass(frozen=True)
 class PipelinePipe:
     coord: Coordinate
     type: str

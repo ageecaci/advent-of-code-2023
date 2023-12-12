@@ -17,7 +17,7 @@ start = 'AAA'
 end = 'ZZZ'
 
 
-@dataclass
+@dataclass(frozen=True)
 class DesertNode:
     id: int
     left: int

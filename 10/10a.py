@@ -36,7 +36,7 @@ class Pipeline:
         return False
 
 
-@dataclass
+@dataclass(frozen=True)
 class PipelinePipe:
     coord: Coordinate
     type: str
