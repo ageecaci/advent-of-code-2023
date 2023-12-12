@@ -2,6 +2,7 @@
 .vscode
 
 **/__pycache__
+**/attempts/
 
 **/*-examples*.txt
 **/*-input.txt
