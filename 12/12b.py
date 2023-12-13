@@ -31,14 +31,14 @@ class Partial:
 
 @cache
 def count_permutations(partial: Partial) -> int:
-    logging.debug('Checking %r', partial)
+    logging.log(hl.EXTRA_NOISY, 'Checking %r', partial)
     if len(partial.backups) < 1:
         count = 1 if '#' not in partial.springs else 0
-        logging.debug('Returning count of %d for %r', count, partial)
+        logging.log(hl.EXTRA_DETAIL, 'Returning count of %d for %r', count, partial)
         return count
     backup = partial.backups[0]
     if len(partial.springs) < backup:
-        logging.debug('Returning count of 0 for %r', partial)
+        logging.log(hl.EXTRA_DETAIL, 'Returning count of 0 for %r', partial)
         return 0
 
     count = 0
@@ -50,7 +50,7 @@ def count_permutations(partial: Partial) -> int:
         springs_remainder = partial.springs[backup + 1:]
         sub_partial = Partial(springs_remainder, partial.backups[1:])
         sub_count = count_permutations(sub_partial)
-        logging.debug('Including sub-count of %d for %r from %r', sub_count, partial, sub_partial)
+        logging.log(hl.EXTRA_NOISY, 'Including sub-count of %d for %r from %r', sub_count, partial, sub_partial)
         count += sub_count
 
     if partial.springs[0] != '#':
@@ -58,10 +58,10 @@ def count_permutations(partial: Partial) -> int:
         springs_remainder = partial.springs[1:]
         sub_partial = Partial(springs_remainder, partial.backups)
         sub_count = count_permutations(sub_partial)
-        logging.debug('Including sub-count of %d for %r from %r', sub_count, partial, sub_partial)
+        logging.log(hl.EXTRA_NOISY, 'Including sub-count of %d for %r from %r', sub_count, partial, sub_partial)
         count += sub_count
 
-    logging.debug('Returning count of %d for %r', count, partial)
+    logging.log(hl.EXTRA_DETAIL, 'Returning count of %d for %r', count, partial)
     return count
 
 
@@ -70,7 +70,8 @@ def main(props):
 
     count = 0
     for line in lines:
-        logging.debug('Starting line %s', line)
+        logging.log(hl.EXTRA_DETAIL, '')
+        logging.log(hl.EXTRA_DETAIL, 'Starting line %s', line[:-1])
         springs_label, backups_label = line.split()
         unfolded_springs_label = '?'.join(5 * [springs_label])
         backup_labels = backups_label.split(',')
@@ -79,7 +80,7 @@ def main(props):
 
         start = Partial(unfolded_springs_label, tuple(unfolded_backups))
         sub_count = count_permutations(start)
-        logging.debug('Returning count of %d for line %s', sub_count, line)
+        logging.debug('Returning count of %d for line %s', sub_count, line[:-1])
         count += sub_count
 
     print(count)

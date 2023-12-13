@@ -42,6 +42,8 @@ will be assumed to be a filename suffix.
 
 The `-v` parameter will enable debug logging - where available.
 This mode provides additional hints as to the steps taken while solving.
+Setting the parameter multiple times increases the verbosity of the logging.
+(Up to 3 levels currently supported by some scripts.)
 
 Some solutions (from day 3 onwards) make use of external libraries.
 To execute these, the configured virtual environment must first be configured then activated.
@@ -51,7 +53,7 @@ The setup script assumes a UNIX virtual environment will be created.
 ./setup.sh
 . ./.venv/bin/activate
 DAY=1
-"${DAY}/${DAY}a.py" -ve   # can use `${DAY}/${DAY}a-examples.txt` as input
+"${DAY}/${DAY}a.py" -vvve # can use `${DAY}/${DAY}a-examples.txt` as input
 "${DAY}/${DAY}a.py" -ve 2 # can use `${DAY}/${DAY}a-examples2.txt` as input
 "${DAY}/${DAY}a.py"       # can use `${DAY}/${DAY}a-input.txt` as input
 "${DAY}/${DAY}b.py"       # can use `${DAY}/${DAY}b-input.txt` as input
