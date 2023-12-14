@@ -6,3 +6,5 @@
 
 **/*-examples*.txt
 **/*-input.txt
+!template/-examples.txt
+!template/-input.txt
