@@ -5,11 +5,11 @@ import collections
 from dataclasses import dataclass
 import logging
 import operator
-import os
+import pathlib
 import sys
 import typing
-sys.path.append(os.path.normpath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), '..')))
+__file = pathlib.Path(__file__).absolute()
+sys.path.append(str(__file.parent.parent.resolve()))
 
 from bidict import bidict
 

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 import logging
-import os
+import pathlib
 import sys
-sys.path.append(os.path.normpath(os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), '..')))
+__file = pathlib.Path(__file__).absolute()
+sys.path.append(str(__file.parent.parent.resolve()))
 
 import lib.helper_args as ha
 import lib.helper_file as hf
