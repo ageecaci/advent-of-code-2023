@@ -12,6 +12,7 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
 
 
 def main(props):
@@ -32,7 +33,7 @@ def main(props):
             lefter = int(lefter_label)
             if lefter in righters:
                 matching_game_numbers += 1
-        logging.debug('%s has %d matching numbers', game_label, matching_game_numbers)
+        logger.debug('%s has %d matching numbers', game_label, matching_game_numbers)
         matching_numbers[game_number - 1] = matching_game_numbers
 
     copy_count = np.ones(len(lines), np.longlong)
@@ -40,7 +41,7 @@ def main(props):
         matches = matching_numbers[game_number]
         for i in range(matches):
             copy_count[game_number + i + 1] += copy_count[game_number]
-    logging.debug('Copy counts: %r', copy_count)
+    logger.debug('Copy counts: %r', copy_count)
 
     subtotal = 0
     for count in copy_count:

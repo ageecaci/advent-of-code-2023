@@ -15,7 +15,7 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__file.stem)
 
 blank_character = '.'
 block_character = '#'
@@ -54,7 +54,7 @@ class Platform:
         rollables_by_line = self.rollables_by_line()
         self.empty_rollables()
         for rollable in rollables_by_line:
-            logging.log(hl.EXTRA_NOISY, 'Checking rollable starting from %r', rollable)
+            logger.log(hl.EXTRA_NOISY, 'Checking rollable starting from %r', rollable)
             found_blocker = False
             for line_index in range(rollable.line - 1, -1, -1):
                 to_test = Coordinate(line_index, rollable.character)

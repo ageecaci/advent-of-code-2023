@@ -12,6 +12,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 start = 'AAA'
 end = 'ZZZ'
@@ -67,7 +69,7 @@ def main(props):
         desert_node = DesertNode(id.strip(), left.strip(), right.strip())
         if desert_node.id in node_map:
             raise Exception(f'Duplicate node detected: {desert_node.id}')
-        logging.debug('Adding to map: %r', desert_node)
+        logger.debug('Adding to map: %r', desert_node)
         node_map[desert_node.id] = desert_node
         if node_is_starting_point(desert_node):
             current_node_set.add(desert_node.id)

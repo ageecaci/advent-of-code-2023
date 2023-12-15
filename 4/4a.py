@@ -10,6 +10,7 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
 
 
 def main(props):
@@ -32,7 +33,7 @@ def main(props):
                     game_subtotal = 1
                 else:
                     game_subtotal *= 2
-        logging.debug('%s is worth %d points', game_label, game_subtotal)
+        logger.debug('%s is worth %d points', game_label, game_subtotal)
         subtotal += game_subtotal
 
     print(subtotal)

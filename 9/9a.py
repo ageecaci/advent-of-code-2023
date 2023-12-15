@@ -10,6 +10,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def all_zeros(sequence: list[int]) -> bool:
     for item in sequence:
@@ -34,16 +36,16 @@ def main(props):
                 found_seq_end = True
                 break
         if not found_seq_end:
-            logging.error('%r', diffs)
+            logger.error('%r', diffs)
             raise Exception('Ran out of differences for sequence')
         for i in range(len(diffs) - 1, 0, -1):
             diff = diffs[i - 1]
             diff_diff = diffs[i]
             diff.append(diff[-1] + diff_diff[-1])
-        logging.debug('New sequence: %r', diffs)
+        logger.debug('New sequence: %r', diffs)
         next_predictions.append(diffs[0][-1])
 
-    logging.debug('Predictions: %r', next_predictions)
+    logger.debug('Predictions: %r', next_predictions)
     print(sum(next_predictions))
 
 

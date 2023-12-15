@@ -17,6 +17,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 @dataclass(frozen=True)
 class AlmanacRange:
@@ -88,9 +90,9 @@ def main(props):
         line = lines[i].strip()
         if len(line) < 1:
             if len(current_map_label) < 1:
-                logging.debug('Empty map label encountered during break: skipping')
+                logger.debug('Empty map label encountered during break: skipping')
             elif len(current_map) < 1:
-                logging.warn('Empty mapping encountered for %s', current_map_label)
+                logger.warn('Empty mapping encountered for %s', current_map_label)
                 current_map_label = ''
             else:
                 dependencies[current_map_label] = current_map
@@ -103,21 +105,21 @@ def main(props):
         i += 1
     dependencies[current_map_label] = current_map
     if len(current_map) < 1:
-        logging.warn('Empty mapping encountered for %s', current_map_label)
+        logger.warn('Empty mapping encountered for %s', current_map_label)
     else:
         dependencies[current_map_label] = current_map
-    logging.debug('Extracted %d dependencies from almanac', len(dependencies))
+    logger.debug('Extracted %d dependencies from almanac', len(dependencies))
 
     for map_label, map_instructions in dependencies.items():
         trimmed_map_label, _ = map_label.split(None, 1)
         source, destination = trimmed_map_label.split('-to-', 1)
         dependency_mappings[source] = destination
-        logging.debug('Adding mapping from %s to %s', source, destination)
+        logger.debug('Adding mapping from %s to %s', source, destination)
         instructions = RangeMap()
         for map_instruction in map_instructions:
             instruction_labels = map_instruction.split()
             if len(instruction_labels) > 3:
-                logging.warn('More than 3 instructions found in almanac: %s (%s)', map_label, map_instruction)
+                logger.warn('More than 3 instructions found in almanac: %s (%s)', map_label, map_instruction)
             destination_start = int(instruction_labels[0])
             source_start = int(instruction_labels[1])
             range_length = int(instruction_labels[2])
@@ -131,7 +133,7 @@ def main(props):
         if checker not in dependency_mappings.inverse:
             raise Exception(f'No inverse mapping found for {checker}')
         checker = dependency_mappings.inverse[checker]
-    logging.debug('Found valid mapping path from seed to location')
+    logger.debug('Found valid mapping path from seed to location')
 
     _, seeds_label = target_seeds.split(':', 1)
     seed_labels = seeds_label.split()
@@ -151,7 +153,7 @@ def main(props):
                 closest_location = almanac_range.start
             else:
                 closest_location = min(closest_location, almanac_range.start)
-            logging.debug('New closest location: %d', closest_location)
+            logger.debug('New closest location: %d', closest_location)
             continue
         next_source = dependency_mappings[almanac_range.source]
         instruction_ranges = dependency_instructions[almanac_range.source]
@@ -162,14 +164,14 @@ def main(props):
             if almanac_range.start + almanac_range.length - 1 <= instruction_range.source_end:
                 # almanac range subset of instruction range
                 new_almanac_range = AlmanacRange(instruction_range.map(almanac_range.start), almanac_range.length, next_source)
-                logging.debug('From %s to %s', almanac_range, new_almanac_range)
+                logger.debug('From %s to %s', almanac_range, new_almanac_range)
                 to_process.append(new_almanac_range)
             else:
                 # split into 2 ranges
                 overlap = instruction_range.source_end - almanac_range.start + 1
                 new_almanac_range = AlmanacRange(instruction_range.map(almanac_range.start), overlap, next_source)
                 remaining_almanac_range = AlmanacRange(almanac_range.start + overlap, almanac_range.length - overlap, almanac_range.source)
-                logging.debug('Split %s to %s and %s', almanac_range, new_almanac_range, remaining_almanac_range)
+                logger.debug('Split %s to %s and %s', almanac_range, new_almanac_range, remaining_almanac_range)
                 to_process.append(new_almanac_range)
                 to_process.append(remaining_almanac_range)
         else:
@@ -178,14 +180,14 @@ def main(props):
             if next_instruction_range == None or next_instruction_range.source_start >= almanac_range.start + almanac_range.length:
                 # almanac range maps directly to next property set
                 new_almanac_range = AlmanacRange(almanac_range.start, almanac_range.length, next_source)
-                logging.debug('From %s to %s', almanac_range, new_almanac_range)
+                logger.debug('From %s to %s', almanac_range, new_almanac_range)
                 to_process.append(new_almanac_range)
             else:
                 # split in 2
                 non_overlapping = next_instruction_range.source_start - almanac_range.start
                 new_almanac_range = AlmanacRange(almanac_range.start, non_overlapping, next_source)
                 remaining_almanac_range = AlmanacRange(next_instruction_range.source_start, almanac_range.length - non_overlapping, almanac_range.source)
-                logging.debug('Split %s to %s and %s', almanac_range, new_almanac_range, remaining_almanac_range)
+                logger.debug('Split %s to %s and %s', almanac_range, new_almanac_range, remaining_almanac_range)
                 to_process.append(new_almanac_range)
                 to_process.append(remaining_almanac_range)
 

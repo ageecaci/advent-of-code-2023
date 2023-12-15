@@ -13,6 +13,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 @dataclass(frozen=True)
 class DesertNode:
@@ -58,7 +60,7 @@ def main(props):
         desert_node = DesertNode(id.strip(), left.strip(), right.strip())
         if desert_node.id in node_map:
             raise Exception(f'Duplicate node detected: {desert_node.id}')
-        logging.debug('Adding to map: %r', desert_node)
+        logger.debug('Adding to map: %r', desert_node)
         node_map[desert_node.id] = desert_node
         if node_is_starting_point(desert_node):
             starting_node_ids.add(desert_node.id)
@@ -70,17 +72,17 @@ def main(props):
         current_node = node_map[starting_node_id]
         while not node_is_terminus(current_node):
             next_node = make_move(current_node, path[i], node_map)
-            logging.debug('Travelling from %s to %s', current_node.id, next_node.id)
+            logger.debug('Travelling from %s to %s', current_node.id, next_node.id)
             current_node = next_node
             i += 1
             if i >= len(path):
                 cycles += 1
                 i = 0
         journey_length = cycles * len(path) + i
-        logging.debug('Journey from %s took %d steps', starting_node_id, journey_length)
+        logger.debug('Journey from %s took %d steps', starting_node_id, journey_length)
         starting_node_steps[starting_node_id] = journey_length
 
-    logging.warning('This is the solution to the AoC problem, not the generalised problem statement.')
+    logger.warning('This is the solution to the AoC problem, not the generalised problem statement.')
     print(math.lcm(*list(starting_node_steps.values())))
 
 

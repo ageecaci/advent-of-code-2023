@@ -11,6 +11,7 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
 
 start = 'AAA'
 end = 'ZZZ'
@@ -34,7 +35,7 @@ def main(props):
         paths = paths.split('(', 1)[1].split(')', 1)[0]
         left, right = paths.split(',')
         desert_node = DesertNode(id.strip(), left.strip(), right.strip())
-        logging.debug('Adding to map: %r', desert_node)
+        logger.debug('Adding to map: %r', desert_node)
         node_map[desert_node.id] = desert_node
 
     current_location = node_map[start]
@@ -48,7 +49,7 @@ def main(props):
             next_location = node_map[current_location.right]
         else:
             raise Exception(f'invalid next step {next_step} from {current_location.id} (idx: {i})')
-        logging.debug('Moving from %s to %s (idx: %d, cycle %d)', current_location.id, next_location.id, i, cycles)
+        logger.debug('Moving from %s to %s (idx: %d, cycle %d)', current_location.id, next_location.id, i, cycles)
         current_location = next_location
         i += 1
         if i >= len(path):

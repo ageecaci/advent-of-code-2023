@@ -11,6 +11,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 card_ranks = {
     '2': 2,
@@ -118,7 +120,7 @@ def main(props):
     subtotal = 0
     for idx, hand in enumerate(hands):
         value = hand.value(idx + 1)
-        logging.debug(
+        logger.debug(
             'hand %s has value %d (classification: %d, bid: %d)',
             hand.hand_label, value, hand.classification, hand.bid)
         subtotal += value

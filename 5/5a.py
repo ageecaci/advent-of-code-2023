@@ -14,6 +14,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 class Instruction:
     def __init__(self, destination_start, source_start, range_length):
@@ -69,9 +71,9 @@ def main(props):
         line = lines[i].strip()
         if len(line) < 1:
             if len(current_map_label) < 1:
-                logging.debug('Empty map label encountered during break: skipping')
+                logger.debug('Empty map label encountered during break: skipping')
             elif len(current_map) < 1:
-                logging.warn('Empty mapping encountered for %s', current_map_label)
+                logger.warn('Empty mapping encountered for %s', current_map_label)
                 current_map_label = ''
             else:
                 dependencies[current_map_label] = current_map
@@ -84,21 +86,21 @@ def main(props):
         i += 1
     dependencies[current_map_label] = current_map
     if len(current_map) < 1:
-        logging.warn('Empty mapping encountered for %s', current_map_label)
+        logger.warn('Empty mapping encountered for %s', current_map_label)
     else:
         dependencies[current_map_label] = current_map
-    logging.debug('Extracted %d dependencies from almanac', len(dependencies))
+    logger.debug('Extracted %d dependencies from almanac', len(dependencies))
 
     for map_label, map_instructions in dependencies.items():
         trimmed_map_label, _ = map_label.split(None, 1)
         source, destination = trimmed_map_label.split('-to-', 1)
         dependency_mappings[source] = destination
-        logging.debug('Adding mapping from %s to %s', source, destination)
+        logger.debug('Adding mapping from %s to %s', source, destination)
         instructions = RangeMap()
         for map_instruction in map_instructions:
             instruction_labels = map_instruction.split()
             if len(instruction_labels) > 3:
-                logging.warn('More than 3 instructions found in almanac: %s (%s)', map_label, map_instruction)
+                logger.warn('More than 3 instructions found in almanac: %s (%s)', map_label, map_instruction)
             destination_start = int(instruction_labels[0])
             source_start = int(instruction_labels[1])
             range_length = int(instruction_labels[2])
@@ -112,7 +114,7 @@ def main(props):
         if checker not in dependency_mappings.inverse:
             raise Exception(f'No inverse mapping found for {checker}')
         checker = dependency_mappings.inverse[checker]
-    logging.debug('Found valid mapping path from seed to location')
+    logger.debug('Found valid mapping path from seed to location')
 
     _, seeds_label = target_seeds.split(':', 1)
     seed_labels = seeds_label.split()
@@ -129,7 +131,7 @@ def main(props):
             else:
                 next_index = target_index
             next_property = dependency_mappings[target_property]
-            logging.debug('mapping %s %d to %s %d', target_property, target_index, next_property, next_index)
+            logger.debug('mapping %s %d to %s %d', target_property, target_index, next_property, next_index)
             target_index = next_index
             target_property = next_property
             if target_property == 'location':

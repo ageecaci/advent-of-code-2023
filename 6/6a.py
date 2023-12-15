@@ -11,24 +11,26 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def min_if_not_unset(new_value: int, existing_value: int, label: str) -> int:
     if existing_value < 0:
-        logging.debug('New min for %s: %d (was %d)', label, new_value, existing_value)
+        logger.debug('New min for %s: %d (was %d)', label, new_value, existing_value)
         return new_value
     new_minimum = min(new_value, existing_value)
     if new_minimum != existing_value:
-        logging.debug('New min for %s: %d (was %d)', label, new_value, existing_value)
+        logger.debug('New min for %s: %d (was %d)', label, new_value, existing_value)
     return new_minimum
 
 
 def max_if_not_unset(new_value: int, existing_value: int, label: str) -> int:
     if existing_value < 0:
-        logging.debug('New max for %s: %d (was %d)', label, new_value, existing_value)
+        logger.debug('New max for %s: %d (was %d)', label, new_value, existing_value)
         return new_value
     new_maximum = max(new_value, existing_value)
     if new_maximum != existing_value:
-        logging.debug('New max for %s: %d (was %d)', label, new_value, existing_value)
+        logger.debug('New max for %s: %d (was %d)', label, new_value, existing_value)
     return new_maximum
 
 
@@ -79,7 +81,7 @@ def main(props):
                 upper_bound_range = (upper_bound_range[0], time_test - 1)
 
         winning_strategy_count = upper_bound_range[0] - lower_bound_range[0] + 1
-        logging.debug(
+        logger.debug(
             'Game %d has %s winning strategies (%d to %d)',
             game, winning_strategy_count, lower_bound_range[0], upper_bound_range[0])
         subtotal *= winning_strategy_count

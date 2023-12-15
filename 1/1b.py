@@ -10,6 +10,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 NUMBERS = {
     '0': 0,
     '1': 1,
@@ -87,7 +89,7 @@ def main(props):
         first = find_first_number(line)
         last = find_last_number(line)
         result = f'{first}{last}'
-        logging.debug(result)
+        logger.debug(result)
         subtotal += int(result)
 
     print(subtotal)

@@ -16,6 +16,8 @@ import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 # characters = '#$%&*+-./0123456789=@' + '\n'
 symbols = '*'
 digits = '0123456789'
@@ -70,7 +72,7 @@ def main(props):
             character = line[j]
             if character in symbols:
                 symbol_coords.append(Coordinate(i, j))
-    logging.debug('Discovered %d symbol coordinates: %r', len(symbol_coords), symbol_coords)
+    logger.debug('Discovered %d symbol coordinates: %r', len(symbol_coords), symbol_coords)
 
     subtotal = 0
     for symbol in symbol_coords:
@@ -104,55 +106,55 @@ def main(props):
                 count += 1
         if count != 2:
             continue
-        logging.debug('Found valid gear: %s', symbol)
+        logger.debug('Found valid gear: %s', symbol)
 
         # find adjacent numbers from the adjacent digits
         gear_power = 1
         if gear_adjacent[1, 0]: # left
             number = (find_contiguous_matches_to_left(lines[symbol.line], symbol.character - 1, digits)
                       + lines[symbol.line][symbol.character - 1])
-            logging.debug('  Gear number: %s', number)
+            logger.debug('  Gear number: %s', number)
             gear_power *= int(number)
         if gear_adjacent[1, 2]: # right
             number = (lines[symbol.line][symbol.character + 1]
                       + find_contiguous_matches_to_right(lines[symbol.line], symbol.character + 1, digits))
-            logging.debug('  Gear number: %s', number)
+            logger.debug('  Gear number: %s', number)
             gear_power *= int(number)
         if gear_adjacent[0, 1]: # up
             number = (find_contiguous_matches_to_left(lines[symbol.line - 1], symbol.character, digits)
                       + lines[symbol.line - 1][symbol.character]
                       + find_contiguous_matches_to_right(lines[symbol.line - 1], symbol.character, digits))
-            logging.debug('  Gear number: %s', number)
+            logger.debug('  Gear number: %s', number)
             gear_power *= int(number)
         else:
             if gear_adjacent[0, 0]: # up left
                 number = (find_contiguous_matches_to_left(lines[symbol.line - 1], symbol.character - 1, digits)
                           + lines[symbol.line - 1][symbol.character - 1])
-                logging.debug('  Gear number: %s', number)
+                logger.debug('  Gear number: %s', number)
                 gear_power *= int(number)
             if gear_adjacent[0, 2]: # up right
                 number = (lines[symbol.line - 1][symbol.character + 1]
                           + find_contiguous_matches_to_right(lines[symbol.line - 1], symbol.character + 1, digits))
-                logging.debug('  Gear number: %s', number)
+                logger.debug('  Gear number: %s', number)
                 gear_power *= int(number)
         if gear_adjacent[2, 1]: # down
             number = (find_contiguous_matches_to_left(lines[symbol.line + 1], symbol.character, digits)
                       + lines[symbol.line + 1][symbol.character]
                       + find_contiguous_matches_to_right(lines[symbol.line + 1], symbol.character, digits))
-            logging.debug('  Gear number: %s', number)
+            logger.debug('  Gear number: %s', number)
             gear_power *= int(number)
         else:
             if gear_adjacent[2, 0]: # down left
                 number = (find_contiguous_matches_to_left(lines[symbol.line + 1], symbol.character - 1, digits)
                           + lines[symbol.line + 1][symbol.character - 1])
-                logging.debug('  Gear number: %s', number)
+                logger.debug('  Gear number: %s', number)
                 gear_power *= int(number)
             if gear_adjacent[2, 2]: # down right
                 number = (lines[symbol.line + 1][symbol.character + 1]
                           + find_contiguous_matches_to_right(lines[symbol.line + 1], symbol.character + 1, digits))
-                logging.debug('  Gear number: %s', number)
+                logger.debug('  Gear number: %s', number)
                 gear_power *= int(number)
-        logging.debug('  Gear power: %s', gear_power)
+        logger.debug('  Gear power: %s', gear_power)
         subtotal += gear_power
 
     print(subtotal)

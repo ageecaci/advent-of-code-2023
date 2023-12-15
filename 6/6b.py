@@ -11,10 +11,11 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def midpoint(minimum: int, maximum: int) -> int:
     return math.floor((maximum - minimum)/2) + minimum
-
 
 
 def main(props):
@@ -58,7 +59,7 @@ def main(props):
                 upper_bound_range = (upper_bound_range[0], time_test - 1)
 
         winning_strategy_count = upper_bound_range[0] - lower_bound_range[0] + 1
-        logging.debug(
+        logger.debug(
             'Game %d has %s winning strategies (%d to %d)',
             game, winning_strategy_count, lower_bound_range[0], upper_bound_range[0])
         subtotal *= winning_strategy_count

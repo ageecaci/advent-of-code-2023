@@ -21,7 +21,7 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__file.stem)
 
 blank_character = '.'
 block_character = '#'
@@ -65,7 +65,7 @@ def tilt(state: TiltOperationState) -> tuple[Coordinate]:
     new_positions = set()
     # assumes the rollables are pre-sorted, also necessary for caching
     for rollable in state.rollables:
-        logging.log(hl.EXTRA_NOISY, 'Checking rollable starting from %r', rollable)
+        logger.log(hl.EXTRA_NOISY, 'Checking rollable starting from %r', rollable)
         last_checked = rollable
         for to_test in coordinates_to_check(rollable, state.direction, state.limits):
             if to_test in blocks or to_test in new_positions:
@@ -138,7 +138,7 @@ class Platform:
         for rock in rollables:
             distance_from_bottom = self.limits.max_line - rock.line
             subtotal += distance_from_bottom
-            logging.log(hl.EXTRA_NOISY, 'Adding %d to subtotal', distance_from_bottom)
+            logger.log(hl.EXTRA_NOISY, 'Adding %d to subtotal', distance_from_bottom)
         return subtotal
 
     def cycle(self, iterations: int):

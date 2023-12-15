@@ -10,6 +10,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 limits = {
     'red': 12,
@@ -37,11 +39,11 @@ def main(props):
                 count, colour = count_label.split(' ')
                 count = int(count)
                 if colour not in limits or count > limits[colour]:
-                    logging.debug('%s failed with %s', game_label, count_label)
+                    logger.debug('%s failed with %s', game_label, count_label)
                     game_valid = False
                     break
         if game_valid:
-            logging.debug('%s succeeded', game_label)
+            logger.debug('%s succeeded', game_label)
             subtotal += int(game_label[5:])
 
     print(subtotal)

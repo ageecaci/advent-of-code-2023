@@ -12,6 +12,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def ascii_codes(input: str) -> Iterable[int]:
     codes = []
@@ -23,7 +25,7 @@ def ascii_codes(input: str) -> Iterable[int]:
 @cache
 def wrap_subtotal(input: int) -> int:
     multiplied = input * 17
-    logging.log(hl.EXTRA_NOISY, 'multiplying sequence sub-total %d -> %d', input, multiplied)
+    logger.log(hl.EXTRA_NOISY, 'multiplying sequence sub-total %d -> %d', input, multiplied)
     return multiplied % 256
 
 
@@ -35,18 +37,18 @@ def main(props):
     subtotal = 0
     for sequence in sequences:
         sequence = sequence.strip()
-        logging.log(hl.EXTRA_DETAIL, 'starting sequence %s', sequence)
+        logger.log(hl.EXTRA_DETAIL, 'starting sequence %s', sequence)
         sequence_ascii_codes = ascii_codes(sequence)
         sequence_subtotal = 0
         for code_index, code in enumerate(sequence_ascii_codes):
             new_sequence_subtotal = sequence_subtotal + code
-            logging.log(hl.EXTRA_NOISY, 'adding %d (char %s) to sequence sub-total %d = %d',
+            logger.log(hl.EXTRA_NOISY, 'adding %d (char %s) to sequence sub-total %d = %d',
                         code, sequence[code_index], sequence_subtotal, new_sequence_subtotal)
             sequence_subtotal = new_sequence_subtotal
             sequence_subtotal = wrap_subtotal(sequence_subtotal)
-            logging.log(hl.EXTRA_NOISY, 'wrapping sequence sub-total %d -> %d',
+            logger.log(hl.EXTRA_NOISY, 'wrapping sequence sub-total %d -> %d',
                         new_sequence_subtotal, sequence_subtotal)
-        logging.debug('sequence %s has hash %d', sequence, sequence_subtotal)
+        logger.debug('sequence %s has hash %d', sequence, sequence_subtotal)
         subtotal += sequence_subtotal
 
     print(subtotal)

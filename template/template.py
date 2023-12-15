@@ -21,6 +21,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))

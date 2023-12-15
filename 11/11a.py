@@ -14,6 +14,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 class Universe:
     def __init__(self, grid: list[str]):
@@ -35,7 +37,7 @@ class Universe:
             extra_rows = sum(self.rows_without_galaxies[:galaxy.line])
             extra_columns = sum(self.columns_without_galaxies[:galaxy.character])
             new_loc = Coordinate(galaxy.line + extra_rows, galaxy.character + extra_columns)
-            logging.debug('Expanding: %r moved to %r', galaxy, new_loc)
+            logger.debug('Expanding: %r moved to %r', galaxy, new_loc)
             expanded_galaxies.add(new_loc)
         self.galaxies = expanded_galaxies
 
@@ -44,7 +46,7 @@ def calculate_distance(a: Coordinate, b: Coordinate) -> int:
     line_diff = abs(a.line - b.line)
     char_diff = abs(a.character - b.character)
     total_diff = line_diff + char_diff
-    logging.debug('Distance of %d calculated between %r and %r', total_diff, a, b)
+    logger.debug('Distance of %d calculated between %r and %r', total_diff, a, b)
     return total_diff
 
 
@@ -57,7 +59,7 @@ def main(props):
         for character_index, character in enumerate(line):
             if character == '#':
                 coord = Coordinate(line_index, character_index)
-                logging.debug('Galaxy found at %r', coord)
+                logger.debug('Galaxy found at %r', coord)
                 universe.add(coord)
 
     universe.expand()

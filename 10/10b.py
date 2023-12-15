@@ -14,6 +14,8 @@ import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 '''
 .
@@ -152,7 +154,7 @@ def main(props):
         try:
             start_index = line.index('S')
             start = Coordinate(line_index, start_index)
-            logging.debug('Starting from %r', start)
+            logger.debug('Starting from %r', start)
         except:
             pass
 
@@ -161,12 +163,12 @@ def main(props):
     for neighbour in find_connected(start, grid, limits):
         pipe_type = hc.lookup_in(neighbour, grid)
         new_pipe = PipelinePipe(neighbour, pipe_type, start, current_depth)
-        logging.debug('Connecting %r from start', new_pipe)
+        logger.debug('Connecting %r from start', new_pipe)
         pipeline.add(neighbour)
         pipeline.chains.append([new_pipe])
 
     start_type = determine_pipe_type_from_connected(start, [chain[0] for chain in pipeline.chains])
-    logging.debug('Start point is type: %s', start_type)
+    logger.debug('Start point is type: %s', start_type)
     grid[start.line] = (
         grid[start.line][:start.character]
         + start_type
@@ -181,7 +183,7 @@ def main(props):
             if not pipeline.contains(next_pipe_coords):
                 pipe_type = hc.lookup_in(next_pipe_coords, grid)
                 new_pipe = PipelinePipe(next_pipe_coords, pipe_type, last_pipe.coord, current_depth)
-                logging.debug('Connecting %r from %r', new_pipe, last_pipe)
+                logger.debug('Connecting %r from %r', new_pipe, last_pipe)
                 pipeline.add(next_pipe_coords)
                 chain.append(new_pipe)
                 discovered_new_pipe = True
@@ -199,7 +201,7 @@ def main(props):
                 # A point is inside a polygon if and only iff the number of "crossings" from a ray is odd.
                 if perpendicular_crossings % 2 == 1:
                     debug_line.append('I')
-                    logging.debug('Pipeline encloses %r', coord)
+                    logger.debug('Pipeline encloses %r', coord)
                     count += 1
                 else:
                     debug_line.append('O')
@@ -222,7 +224,7 @@ def main(props):
                         elif character in '7F' and last_corner in 'JL':
                             perpendicular_crossings += 1
                         last_corner = ''
-        logging.debug('Finished scanning line %d: %d crossings; %s', line_index, perpendicular_crossings, ''.join(debug_line))
+        logger.debug('Finished scanning line %d: %d crossings; %s', line_index, perpendicular_crossings, ''.join(debug_line))
         assert last_corner == ''
         assert perpendicular_crossings % 2 == 0
 

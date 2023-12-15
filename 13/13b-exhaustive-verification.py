@@ -10,12 +10,14 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def find_horizontal_reflection_point(grid: list[str]) -> int:
     width = len(grid[0])
     potential_matches = []
     for column_to_check in range(1, width):
-        logging.log(hl.EXTRA_NOISY, 'Checking column %s', column_to_check)
+        logger.log(hl.EXTRA_NOISY, 'Checking column %s', column_to_check)
         if is_horizontal_reflection_point(column_to_check, grid):
             potential_matches.append(column_to_check)
     if len(potential_matches) == 1:
@@ -29,7 +31,7 @@ def find_vertical_reflection_point(grid: list[str]) -> int:
     depth = len(grid)
     potential_matches = []
     for row_to_check in range(1, depth):
-        logging.log(hl.EXTRA_NOISY, 'Checking row %s', row_to_check)
+        logger.log(hl.EXTRA_NOISY, 'Checking row %s', row_to_check)
         if is_vertical_reflection_point(row_to_check, grid):
             potential_matches.append(row_to_check)
     if len(potential_matches) == 1:
@@ -49,7 +51,7 @@ def is_horizontal_reflection_point(column: int, grid: list[str]) -> bool:
             break
         for line_index, line in enumerate(grid):
             if line[current_left_column] != line[current_right_column]:
-                logging.log(hl.EXTRA_DETAIL, 'Detected difference for line %d between columns %d and %d: %s does not match %s', line_index, current_left_column, current_right_column, line[current_left_column], line[current_right_column])
+                logger.log(hl.EXTRA_DETAIL, 'Detected difference for line %d between columns %d and %d: %s does not match %s', line_index, current_left_column, current_right_column, line[current_left_column], line[current_right_column])
                 error_count += 1
         current_left_column -= 1
         current_right_column += 1
@@ -67,7 +69,7 @@ def is_vertical_reflection_point(row: int, grid: list[str]) -> bool:
             break
         for column in range(width):
             if grid[current_top_row][column] != grid[current_bottom_row][column]:
-                logging.log(hl.EXTRA_DETAIL, 'Detected difference for column %d between lines %d and %d: %s does not match %s', column, current_top_row, current_bottom_row, grid[current_top_row][column], grid[current_bottom_row][column])
+                logger.log(hl.EXTRA_DETAIL, 'Detected difference for column %d between lines %d and %d: %s does not match %s', column, current_top_row, current_bottom_row, grid[current_top_row][column], grid[current_bottom_row][column])
                 error_count += 1
         current_top_row -= 1
         current_bottom_row += 1
@@ -92,15 +94,15 @@ def main(props):
 
     subtotal = 0
     for pattern_index, pattern in enumerate(patterns):
-        logging.log(hl.EXTRA_DETAIL, '')
-        logging.log(hl.EXTRA_DETAIL, 'Starting searches for pattern %d (starting "%s")', pattern_index, pattern[0])
+        logger.log(hl.EXTRA_DETAIL, '')
+        logger.log(hl.EXTRA_DETAIL, 'Starting searches for pattern %d (starting "%s")', pattern_index, pattern[0])
         horizontal = find_horizontal_reflection_point(pattern)
         if horizontal > 0:
-            logging.debug('found a horizontal reflection point for pattern %d at %d', pattern_index, horizontal)
+            logger.debug('found a horizontal reflection point for pattern %d at %d', pattern_index, horizontal)
             subtotal += horizontal
         vertical = find_vertical_reflection_point(pattern)
         if vertical > 0:
-            logging.debug('found a vertical reflection point for pattern %d at %d', pattern_index, vertical)
+            logger.debug('found a vertical reflection point for pattern %d at %d', pattern_index, vertical)
             subtotal += 100 * vertical
         if horizontal > 0 and vertical > 0:
             raise Exception(f'Multiple reflection points (v{vertical}, h{horizontal}) found for pattern {pattern_index} (starting "{pattern[0]}")')

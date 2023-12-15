@@ -10,6 +10,8 @@ import lib.helper_args as ha
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))
@@ -32,7 +34,7 @@ def main(props):
         game_power = 1
         for colour, max_count in max_counts.items():
             game_power *= max_count
-        logging.debug('%s has power %d', game_label, game_power)
+        logger.debug('%s has power %d', game_label, game_power)
         subtotal += game_power
 
     print(subtotal)

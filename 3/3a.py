@@ -16,6 +16,8 @@ import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 # characters = '#$%&*+-./0123456789=@' + '\n'
 symbols = '#$%&*+-/=@'
 digits = '0123456789'
@@ -45,7 +47,7 @@ def main(props):
             character = line[j]
             if character in symbols:
                 symbol_coords.append(Coordinate(i, j))
-    logging.debug('Discovered %d symbol coordinates: %r', len(symbol_coords), symbol_coords)
+    logger.debug('Discovered %d symbol coordinates: %r', len(symbol_coords), symbol_coords)
 
     # mark adjacent digits
     adjacent = np.full((depth, width), False, np.bool_)
@@ -86,12 +88,12 @@ def main(props):
             if adjacent[i, j]:
                 number += lines[i][j]
             elif len(number) > 0:
-                logging.debug('Discovered adjacent number: %s', number)
+                logger.debug('Discovered adjacent number: %s', number)
                 subtotal += int(number)
                 number = ''
             j += 1
         if len(number) > 0:
-            logging.debug('Discovered adjacent number: %s', number)
+            logger.debug('Discovered adjacent number: %s', number)
             subtotal += int(number)
             number = ''
 

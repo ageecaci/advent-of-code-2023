@@ -14,6 +14,8 @@ import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
+logger = logging.getLogger(__file.stem)
+
 
 '''
 .
@@ -117,7 +119,7 @@ def main(props):
         try:
             start_index = line.index('S')
             start = Coordinate(line_index, start_index)
-            logging.debug('Starting from %r', start)
+            logger.debug('Starting from %r', start)
         except:
             pass
 
@@ -126,7 +128,7 @@ def main(props):
     for neighbour in find_connected(start, grid, limits):
         pipe_type = hc.lookup_in(neighbour, grid)
         new_pipe = PipelinePipe(neighbour, pipe_type, start, current_depth)
-        logging.debug('Connecting %r from start', new_pipe)
+        logger.debug('Connecting %r from start', new_pipe)
         pipeline.chains.append([new_pipe])
 
     while True:
@@ -138,7 +140,7 @@ def main(props):
             if not pipeline.contains(next_pipe_coords):
                 pipe_type = hc.lookup_in(next_pipe_coords, grid)
                 new_pipe = PipelinePipe(next_pipe_coords, pipe_type, last_pipe.coord, current_depth)
-                logging.debug('Connecting %r from %r', new_pipe, last_pipe)
+                logger.debug('Connecting %r from %r', new_pipe, last_pipe)
                 chain.append(new_pipe)
                 discovered_new_pipe = True
         if not discovered_new_pipe:
