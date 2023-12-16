@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from collections import deque
 from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import cache
@@ -18,6 +19,7 @@ import numpy as np
 from lib.class_text_coordinate_limits import TextCoordinateLimits as Limits
 from lib.class_text_coordinate import TextCoordinate as Coordinate
 import lib.helper_args as ha
+import lib.helper_coord as hc
 import lib.helper_file as hf
 import lib.helper_log as hl
 
