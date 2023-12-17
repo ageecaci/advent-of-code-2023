@@ -29,7 +29,6 @@ rollable_character = 'O'
 
 getter_by_line = operator.attrgetter('line')
 getter_by_character = operator.attrgetter('character')
-getter_by_coordinate = operator.attrgetter('line', 'character')
 
 north = 'north'
 south = 'south'
@@ -78,7 +77,7 @@ def tilt(state: TiltOperationState) -> tuple[Coordinate]:
 
 # Provide a "canonical" sorting to make use of caching
 def sort_canonically(rocks: Iterable[Coordinate]) -> tuple[Coordinate]:
-    return tuple(sorted(rocks, key=getter_by_coordinate))
+    return tuple(sorted(rocks))
 
 
 @cache
