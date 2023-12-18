@@ -1,9 +1,13 @@
 #!/usr/bin/env python3
 
+import bisect
+from dataclasses import dataclass
 from collections import deque
 from collections.abc import Iterable
 from dataclasses import dataclass
 from functools import cache
+import heapq
+import itertools
 import logging
 import math
 import operator
@@ -16,10 +20,12 @@ sys.path.append(str(__file.parent.parent.resolve()))
 from bidict import bidict
 import numpy as np
 
+from lib.class_edge import Edge
 from lib.class_text_coordinate_limits import TextCoordinateLimits as Limits
 from lib.class_text_coordinate import TextCoordinate as Coordinate
 import lib.helper_args as ha
 import lib.helper_coord as hc
+import lib.helper_direction as hd
 import lib.helper_file as hf
 import lib.helper_log as hl
 
@@ -28,6 +34,7 @@ logger = logging.getLogger(__file.stem)
 
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))
+    grid = [line.strip() for line in lines]
 
     subtotal = 0
     print(subtotal)

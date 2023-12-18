@@ -26,14 +26,14 @@ class TextCoordinate:
             return self.line == other.line and self.character == other.character + 1
         return NotImplemented
 
-    def up(self) -> 'TextCoordinate':
-        return TextCoordinate(self.line - 1, self.character)
+    def up(self, distance: int = 1) -> 'TextCoordinate':
+        return TextCoordinate(self.line - distance, self.character)
 
-    def down(self) -> 'TextCoordinate':
-        return TextCoordinate(self.line + 1, self.character)
+    def down(self, distance: int = 1) -> 'TextCoordinate':
+        return TextCoordinate(self.line + distance, self.character)
 
-    def left(self) -> 'TextCoordinate':
-        return TextCoordinate(self.line, self.character - 1)
+    def left(self, distance: int = 1) -> 'TextCoordinate':
+        return TextCoordinate(self.line, self.character - distance)
 
-    def right(self) -> 'TextCoordinate':
-        return TextCoordinate(self.line, self.character + 1)
+    def right(self, distance: int = 1) -> 'TextCoordinate':
+        return TextCoordinate(self.line, self.character + distance)
