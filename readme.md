@@ -58,3 +58,12 @@ DAY=1
 "${DAY}/${DAY}a.py"       # can use `${DAY}/${DAY}a-input.txt` as input
 "${DAY}/${DAY}b.py"       # can use `${DAY}/${DAY}b-input.txt` as input
 ```
+
+To validate several days' worth of solutions
+(for example to validate expected behaviour after refactoring)
+a template "validate" shell script is included.
+If given the expected solutions,
+this simply runs each script in turn.
+Make a copy of the template,
+insert any appropriate solutions,
+and uncomment the respective lines.
