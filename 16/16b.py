@@ -148,8 +148,7 @@ class Contraption:
 
 
 def main(props):
-    lines = hf.load_lines(hf.find_input_file(props))
-    grid = [line.strip() for line in lines]
+    grid = hf.load_lines(hf.find_input_file(props))
 
     max_empowered = 0
     for line_index, line in enumerate(grid):

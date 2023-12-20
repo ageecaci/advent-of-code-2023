@@ -34,7 +34,6 @@ logger = logging.getLogger(__file.stem)
 
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))
-    grid = [line.strip() for line in lines]
 
     subtotal = 0
     print(subtotal)

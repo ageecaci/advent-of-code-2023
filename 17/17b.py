@@ -181,7 +181,7 @@ def get_valid_directions(inbound_direction: Optional[str], direction_multiplicit
 
 def main(props):
     lines = hf.load_lines(hf.find_input_file(props))
-    weights = tuple(line.strip() for line in lines)
+    weights = tuple(line for line in lines)
     city = City(weights)
     initial_location = Coordinate(0, 0)
     journey = city.find_minimal_journey(initial_location)

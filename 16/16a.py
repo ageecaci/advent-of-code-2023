@@ -148,8 +148,7 @@ class Contraption:
 
 
 def main(props):
-    lines = hf.load_lines(hf.find_input_file(props))
-    grid = [line.strip() for line in lines]
+    grid = hf.load_lines(hf.find_input_file(props))
     contraption = Contraption(grid)
     subtotal = contraption.walk()
     if logger.isEnabledFor(logging.DEBUG):

@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 
 def load_lines(file_path: str) -> list[str]:
     with open(file_path) as f:
-        return list(f.readlines())
+        return [line.strip() for line in f.readlines()]
 
 
 def find_input_file(properties: cep) -> pathlib.Path:
