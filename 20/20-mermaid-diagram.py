@@ -48,6 +48,7 @@ def main(props):
     visited_modules = set()
     modules = deque()
     modules.append(type_broadcaster)
+    print('graph TD;')
     while len(modules) > 0:
         next = modules.popleft()
         if next in visited_modules:

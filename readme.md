@@ -1,4 +1,6 @@
 [aoc.2023]: https://adventofcode.com/2023
+[com.mermaid]: https://mermaid.js.org/
+[com.mermaid.live]: https://mermaid.live/
 
 # Advent of Code 2023
 
@@ -67,3 +69,9 @@ this simply runs each script in turn.
 Make a copy of the template,
 insert any appropriate solutions,
 and uncomment the respective lines.
+
+Day 20 also includes a variant that outputs a [Mermaid diagram][com.mermaid]
+to help visualise the input datastructure.
+Feed the output from the variant into a Mermaid processor
+(for example, [the Mermaid live editor][com.mermaid.live])
+to produce a visual representation of the graph.
