@@ -18,6 +18,8 @@ class TextCoordinateLimits:
         else:
             self.min_character = max_character
             self.max_character = min_character
+        self.width = self.max_character - self.min_character
+        self.depth = self.max_line - self.min_line
 
     def contains(self, coord: Coordinate) -> bool:
         return (coord.line >= self.min_line and coord.line < self.max_line
