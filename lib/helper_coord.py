@@ -1,7 +1,5 @@
-import argparse
 from collections.abc import Iterable
 import logging
-import pathlib
 
 from lib.class_text_coordinate_limits import TextCoordinateLimits as Limits
 from lib.class_text_coordinate import TextCoordinate as Coordinate
@@ -9,7 +7,7 @@ from lib.class_text_coordinate import TextCoordinate as Coordinate
 logger = logging.getLogger(__name__)
 
 
-def lookup_in(coord: Coordinate, grid: list[str]) -> str:
+def lookup_in(coord: Coordinate, grid: list[str] | tuple[str]) -> str:
     return grid[coord.line][coord.character]
 
 

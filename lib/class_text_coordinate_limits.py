@@ -21,6 +21,11 @@ class TextCoordinateLimits:
         self.width = self.max_character - self.min_character
         self.depth = self.max_line - self.min_line
 
+    def __contains__(self, value):
+        if not isinstance(value, Coordinate):
+            raise ValueError('Limits can only contain coordinates')
+        return (value.line >= self.min_line and value.line < self.max_line
+                and value.character >= self.min_character and value.character < self.max_character)
+
     def contains(self, coord: Coordinate) -> bool:
-        return (coord.line >= self.min_line and coord.line < self.max_line
-                and coord.character >= self.min_character and coord.character < self.max_character)
+        return coord in self
